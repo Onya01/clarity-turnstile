@@ -47,7 +47,7 @@
   (+ (var-get last-unlock-block) (var-get unlock-duration)))
 
 (define-read-only (is-unlock-expired)
-  (> block-height (get-unlock-expiry)))
+  (> burn-block-height (get-unlock-expiry)))
 
 ;; Public functions
 (define-public (unlock-turnstile)
@@ -55,8 +55,8 @@
     (asserts! (is-authorized tx-sender) ERR_UNAUTHORIZED)
     (asserts! (is-locked) ERR_ALREADY_UNLOCKED)
     (var-set turnstile-state STATE_UNLOCKED)
-    (var-set last-unlock-block block-height)
-    (print {action: "unlocked", block: block-height, caller: tx-sender})
+    (var-set last-unlock-block burn-block-height)
+    (print {action: "unlocked", block: burn-block-height, caller: tx-sender})
     (ok true)))
 
 (define-public (lock-turnstile)
@@ -64,7 +64,7 @@
     (asserts! (is-authorized tx-sender) ERR_UNAUTHORIZED)
     (asserts! (is-unlocked) ERR_ALREADY_LOCKED)
     (var-set turnstile-state STATE_LOCKED)
-    (print {action: "locked", block: block-height, caller: tx-sender})
+    (print {action: "locked", block: burn-block-height, caller: tx-sender})
     (ok true)))
 
 (define-public (auto-lock-if-expired)
@@ -72,7 +72,7 @@
     (asserts! (is-unlocked) ERR_ALREADY_LOCKED)
     (asserts! (is-unlock-expired) ERR_INVALID_STATE)
     (var-set turnstile-state STATE_LOCKED)
-    (print {action: "auto-locked", block: block-height, expiry-block: (get-unlock-expiry)})
+    (print {action: "auto-locked", block: burn-block-height, expiry-block: (get-unlock-expiry)})
     (ok true)))
 
 (define-public (add-operator (operator principal))
