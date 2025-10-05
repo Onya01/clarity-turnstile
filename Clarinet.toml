@@ -1,0 +1,24 @@
+[project]
+name = 'clarity-turnstile'
+description = ''
+authors = []
+telemetry = true
+cache_dir = './.cache'
+requirements = []
+[contracts.coin-payment-processor]
+path = 'contracts/coin-payment-processor.clar'
+clarity_version = 3
+epoch = 3.1
+
+[contracts.turnstile-fsm]
+path = 'contracts/turnstile-fsm.clar'
+clarity_version = 3
+epoch = 3.1
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
